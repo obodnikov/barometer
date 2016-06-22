@@ -11,12 +11,14 @@
 
 Barometer barometer;
 
-double pressure;
-double temperature;
+float pressure;
+float temperature;
 
 
 void setup()
 {
+
+
   // открываем последовательный порт
   Serial.begin(9600);
 
@@ -27,19 +29,27 @@ void setup()
   // выводим сообщение об удачной инициализации
   Serial.println("Init completed");
 
-  Particle.variable("varAlt",pressure);
-  Particle.variable("varTemp",temperature);
+
+
+  Particle.variable("varAlt",(double)pressure);
+  Particle.variable("varTemp",(double)temperature);
 
 }
 
 void loop()
 {
+  char varString[16];
+
+
   // создаём переменную и присваиваем ей значения абсолютного давления
-  double pressure = barometer.readPressureMillibars();
+  float pressure = barometer.readPressureMillibars();
   // создаём переменную и присваиваем ей значения высоты над уровнем море
-  double altitude = barometer.pressureToAltitudeMeters(pressure);
+  float altitude = barometer.pressureToAltitudeMeters(pressure);
   // создаём переменную и присваиваем ей температуру окружающей среды
-  double temperature = barometer.readTemperatureC();
+  float temperature = barometer.readTemperatureC();
+
+  sprintf(varString, "p: %f    t: %f", pressure, temperature);
+  Particle.publish("Pressure", varString, PRIVATE);
 
   // Вывод данных в Serial порт
   Serial.print("p: ");
@@ -51,5 +61,5 @@ void loop()
   Serial.print("t: ");
   Serial.print(temperature);
   Serial.println(" C");
-  delay(300);
+  delay(30000);
 }
