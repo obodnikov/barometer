@@ -42,7 +42,7 @@ void loop()
 
 
   // создаём переменную и присваиваем ей значения абсолютного давления
-  float pressure = barometer.readPressureMillibars();
+  float pressure = barometer.readPressureMillimetersHg();
   // создаём переменную и присваиваем ей значения высоты над уровнем море
   float altitude = barometer.pressureToAltitudeMeters(pressure);
   // создаём переменную и присваиваем ей температуру окружающей среды
